@@ -1,0 +1,22 @@
+[project]
+name = "GitHub-User-Activity"
+version = "0.1.0"
+description = "AMATOK"
+authors = [
+    {name = "AMATOK"}
+]
+license = {text = "Clear BSD"}
+readme = "README.md"
+requires-python = ">=3.13"
+classifiers = [
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Clear BSD License",
+  "Natural Language :: English",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3 :: Only",
+]
+dependencies = [
+  "cookiecutter==2.6",
+]
+urls = { Repository = "https://github.com/RR-AMATOK/GitHub-User-Activity" }
