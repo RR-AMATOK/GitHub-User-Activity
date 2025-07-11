@@ -1,13 +1,3 @@
-import os
-import sys
-
-# SCRIPT_DIR gets the absolute directory path of this script file
-SCRIPT_DIR = os.path.dirname(os.path.realpath(__file__))
-
-# sys.path.append() adds the parent directory of SCRIPT_DIR to Python's module search path.
-# This allows for importing modules from the parent directory as if they were in this directory.
-sys.path.append(os.path.dirname(SCRIPT_DIR))
-
 import requests
 from dotenv import dotenv_values
 
@@ -15,21 +5,32 @@ import utilities as utils
 from utilities.exit import exit_program
 
 # loading environment (shared & secrets)
-config = {
-    **dotenv_values("./environment/.env.shared"),
-    # **dotenv_values("./environment/.env.secrets")
-}
+config = {**dotenv_values("./environment/.env.shared")}
 
 
-def get_data(github_user: str, endpoint: str = config["ENDPOINT"]) -> str:
+def get_data(github_user: str, endpoint: str = config["ENDPOINT"]) -> dict:
+    """
+    Fetches data from a specified GitHub API endpoint for a given user.
+
+    Args:
+        github_user (str): The username of the GitHub user.
+        endpoint (str, optional): The API endpoint to fetch data from. Defaults to the value of
+                                  'ENDPOINT' in the environment configuration.
+
+    Returns:
+        dict: The JSON response data from the API request.
+
+    Raises:
+        SystemExit: If an HTTP error occurs during the API request, exits the program with status code 1.
+    """
     _url = f"{config["URL"]}{github_user}/{endpoint}"
 
     # Access the API and saving the data to the json data
     response = requests.get(_url)
     try:
         response.raise_for_status()
-        data = response.json()
-        utils.save(data)
+        return response.json()
+        # utils.save(data) # no need to save data anymore
     except requests.exceptions.HTTPError as e:
         print(e.args[0])
         utils.exit_program(1)
